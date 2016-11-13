@@ -195,6 +195,7 @@ esp =
 		// assign this classes to DOM elements to start/stop/start-stop a video
 		// the DOM element needs also the data-for attribute set
 		// the data-for attribute specifies the iframe id of the video to start/stop
+		// or use the functions start, stop, startStop
 		startClass: 'esp-yt-start',
 		stopClass: 'esp-yt-stop',
 		startStopClass: 'esp-yt-start-stop',
@@ -212,6 +213,11 @@ esp =
 			{
 				var currentId = ytIframes[i].id;
 				this.players[currentId] = new YT.Player(currentId);
+				// clear playingId if video ends
+				this.players[currentId].addEventListener('onStateChange', function(e)
+				{
+					esp.yt.playingId = null;
+				});
 			}
 			
 			startButtons.click(function()
@@ -285,10 +291,3 @@ esp =
 		}
 	}
 };
-
-function onYouTubeIframeAPIReady()
-{
-	esp.yt.parseDocument();
-}
-
-onYouTubeIframeAPIReady();
