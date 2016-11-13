@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="http://www.youtube.com/player_api"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+	<script src="../js/esp.js"></script>
+        <script>
+	    /*
+	    ytPlayers = new Array();
+	    ytPlayingId = null;
+
+	    
+	    function ytParse()
+	    {
+		var iframes = $('.ytPlayer');
+		var startStopButtons = $('.ytStartStop');
+		var startButtons = $('.ytStart');
+		var stopButtons = $('.ytStop');
+		
+		for(var i = 0; i < iframes.length; i++)
+		{
+		    var currentId = iframes[i].id;
+		    ytPlayers[currentId] = new YT.Player(currentId);
+		}
+		
+		
+		startButtons.click(function()
+		{
+		    var forPlayer = this.dataset['for'];
+		    if(ytPlayingId !== null)
+		    {
+			ytPlayers[ytPlayingId].pauseVideo();
+			ytPlayers[forPlayer].playVideo();
+			ytPlayingId = forPlayer;
+		    }
+		});
+		
+		stopButtons.click(function()
+		{
+		    var forPlayer = this.dataset['for'];
+		    if(ytPlayingId === forPlayer)
+		    {
+			ytPlayers[forPlayer].pauseVideo();
+			ytPlayingId = null;
+		    }
+		});
+		
+		
+		startStopButtons.click(function()
+		{
+		    var forPlayer = this.dataset['for'];
+		    if(ytPlayingId === forPlayer)
+		    {
+			ytPlayers[forPlayer].pauseVideo();
+			ytPlayingId = null;
+		    }
+		    else
+		    {
+			if(ytPlayingId)
+			{
+			    ytPlayers[ytPlayingId].pauseVideo();
+			}
+			ytPlayers[forPlayer].playVideo();
+			ytPlayingId = forPlayer;
+		    }
+		    return false;
+		});
+	    }
+	    
+	    
+	    function onYouTubeIframeAPIReady()
+	    {
+		ytParse();
+	    }
+	    
+	   
+            onYouTubeIframeAPIReady();
+
+	    */
+        </script>
+    </head>
+    <body>
+	<div>TODO write content</div>
+	<div style="position:relative;float:left;">
+	    <iframe class="esp-yt-video" id="player" width="385" height="230" src="http://www.youtube.com/embed/erDxb4IkgjM?rel=0&wmode=Opaque&enablejsapi=1;showinfo=0;controls=0" frameborder="0" allowfullscreen></iframe>
+	    <div data-for="player" style="position:absolute;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,0);">
+		<button type="button" class="esp-yt-start-stop" data-for="player">Start/Stop</button>
+	    </div>
+	</div>
+	<div style="position:relative;float:left;">
+	    <iframe class="esp-yt-video" id="player2" width="385" height="230" src="http://www.youtube.com/embed/erDxb4IkgjM?rel=0&wmode=Opaque&enablejsapi=1;showinfo=0;controls=0" frameborder="0" allowfullscreen></iframe>
+	    <div data-for="player2" style="position:absolute;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,0);">
+		<button type="button" class="esp-yt-start-stop" data-for="player2">Start/Stop</button>
+	    </div>
+	</div>
+    </body>
+</html>

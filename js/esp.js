@@ -180,5 +180,115 @@ esp =
                 }
             }, false);
         }
-    }
+    },
+	
+	// YouTube Video API integration
+	yt: {
+		// in this array we stock all youtube video objects
+		// the id of the iframe is the array index of each youtube video object
+		players: new Array(),
+		// current playing video/iframe
+		// playingId is null if no video plays
+		playingId: null,
+		// every youtube iframe must have this class set
+		iframeClass: 'esp-yt-video',
+		// assign this classes to DOM elements to start/stop/start-stop a video
+		// the DOM element needs also the data-for attribute set
+		// the data-for attribute specifies the iframe id of the video to start/stop
+		startClass: 'esp-yt-start',
+		stopClass: 'esp-yt-stop',
+		startStopClass: 'esp-yt-start-stop',
+		
+		parseDocument: function()
+		{
+			// find iframes with youtube video
+			var ytIframes = $('.' + this.iframeClass);
+			var startButtons = $('.' + this.startClass);
+			var stopButtons = $('.' + this.stopClass);
+			var startStopButtons = $('.' + this.startStopClass);
+			
+			// create youtube video objects
+			for(var i = 0; i < ytIframes.length; i++)
+			{
+				var currentId = ytIframes[i].id;
+				this.players[currentId] = new YT.Player(currentId);
+			}
+			
+			startButtons.click(function()
+			{
+				esp.yt.start(this);
+			});
+			stopButtons.click(function()
+			{
+				esp.yt.stop(this);
+			});
+			startStopButtons.click(function()
+			{
+				esp.yt.startStop(this);
+			});
+		},
+		
+		start: function(target, callback)
+		{
+			var forPlayer = target.dataset['for'];
+			if(esp.yt.playingId !== null)
+			{
+				esp.yt.players[esp.yt.playingId].pauseVideo();
+			}
+			esp.yt.players[forPlayer].playVideo();
+			esp.yt.playingId = forPlayer;
+			// run callback
+			if(callback)
+			{
+				callback(target);
+			}
+			return false;
+		},
+		
+		stop: function(target, callback)
+		{
+			var forPlayer = target.dataset['for'];
+			if(esp.yt.playingId === forPlayer)
+			{
+				esp.yt.players[forPlayer].pauseVideo();
+				esp.yt.playingId = null;
+			}
+			if(callback)
+			{
+				callback(target);
+			}
+			return false;
+		},
+		
+		startStop: function(target, callback)
+		{
+			var forPlayer = target.dataset['for'];
+			if(esp.yt.playingId === forPlayer)
+			{
+				esp.yt.players[forPlayer].pauseVideo();
+				esp.yt.playingId = null;
+			}
+			else
+			{
+				if(esp.yt.playingId !== null)
+				{
+					esp.yt.players[esp.yt.playingId].pauseVideo();
+				}
+				esp.yt.players[forPlayer].playVideo();
+				esp.yt.playingId = forPlayer;
+			}
+			if(callback)
+			{
+				callback(target);
+			}
+			return false;
+		}
+	}
 };
+
+function onYouTubeIframeAPIReady()
+{
+	esp.yt.parseDocument();
+}
+
+onYouTubeIframeAPIReady();
