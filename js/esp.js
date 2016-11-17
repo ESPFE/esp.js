@@ -213,10 +213,24 @@ esp =
 			{
 				var currentId = ytIframes[i].id;
 				this.players[currentId] = new YT.Player(currentId);
-				// clear playingId if video ends
 				this.players[currentId].addEventListener('onStateChange', function(e)
 				{
-					esp.yt.playingId = null;
+                    // clear playingId if video ends
+                    if(e.data === YT.PlayerState.ENDED )
+                    {
+                        esp.yt.playingId = null;
+                    }
+                    // stop current running video, if another starts with the youtube integrated start/stop button
+                    if(e.data === YT.PlayerState.PLAYING)
+                    {
+                        // Get id of started player
+                        var playerId = e.target.a.id;
+                        if(esp.yt.playingId !== playerId)
+                        {
+                            esp.yt.players[esp.yt.playingId].pauseVideo();
+                            esp.yt.playingId = playerId;
+                        }
+                    }
 				});
 			}
 			
@@ -241,8 +255,8 @@ esp =
 			{
 				esp.yt.players[esp.yt.playingId].pauseVideo();
 			}
+            esp.yt.playingId = forPlayer;
 			esp.yt.players[forPlayer].playVideo();
-			esp.yt.playingId = forPlayer;
 			// run callback
 			if(callback)
 			{
@@ -280,8 +294,8 @@ esp =
 				{
 					esp.yt.players[esp.yt.playingId].pauseVideo();
 				}
+                esp.yt.playingId = forPlayer;
 				esp.yt.players[forPlayer].playVideo();
-				esp.yt.playingId = forPlayer;
 			}
 			if(callback)
 			{
