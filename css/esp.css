@@ -6,11 +6,16 @@ and open the template in the editor.
 /* 
     Created on : 10.11.2016, 19:31:05
     Author     : asuennemann
+
+	s
 */
 .esp-carousel img {
   display: none;
 }
 .esp-carousel img.esp-show {
   display: inline!important;
+}
+.esp-hidden {
+  display: none!important;
 }
 /*# sourceMappingURL=esp.css.map */
