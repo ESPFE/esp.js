@@ -61,8 +61,13 @@ esp =
             for( var i = 0; i < tmp.length; i++)
             {
                 var images = $(tmp[i]).find('img');
+				esp.carousel.data[i] = new Array();
+				esp.carousel.data[i]['images'] = images;
+				esp.carousel.data[i]['current'] = 0;
                 var btnNext = $(tmp[i]).find('.esp-next');
+				btnNext.attr('data-espcarouselindex', i);
                 var btnPrev = $(tmp[i]).find('.esp-prev');
+				btnPrev.attr('data-espcarouselindex', i);
 
                 $(btnNext).click(function()
                 {
@@ -97,28 +102,38 @@ esp =
 
         loadNext: function(button)
         {
-            var container = $(button).parent();
-            var current = container.find('img.esp-show');
-            var next = current.next('img');
-            if(next.length === 0)
-            {
-                next = container.find('img').first();
-            }
-            current.toggleClass('esp-show');
-            next.toggleClass('esp-show');
+			var carouselIndex = button.dataset['espcarouselindex'];
+			var currentIndex = esp.carousel.data[carouselIndex]['current'];
+			var currentImage = esp.carousel.data[carouselIndex]['images'][currentIndex];
+			var nextIndex = currentIndex + 1;
+			
+			if( nextIndex >= esp.carousel.data[carouselIndex]['images'].length)
+			{
+				nextIndex = 0;
+			}
+			var nextImage = esp.carousel.data[carouselIndex]['images'][nextIndex];
+			esp.carousel.data[carouselIndex]['current'] = nextIndex;
+			
+			$(currentImage).toggleClass('esp-show');
+			$(nextImage).toggleClass('esp-show');
         },
 
         loadPrev: function(button)
         {
-            var container = $(button).parent();
-            var current = container.find('img.esp-show');
-            var prev = current.prev('img');
-            if(prev.length === 0)
-            {
-                prev = container.find('img').last();
-            }
-            current.toggleClass('esp-show');
-            prev.toggleClass('esp-show');
+            var carouselIndex = button.dataset['espcarouselindex'];
+			var currentIndex = esp.carousel.data[carouselIndex]['current'];
+			var currentImage = esp.carousel.data[carouselIndex]['images'][currentIndex];
+			var prevIndex = currentIndex - 1;
+			
+			if(prevIndex < 0)
+			{
+				prevIndex = esp.carousel.data[carouselIndex]['images'].length - 1;
+			}
+			var prevImage = esp.carousel.data[carouselIndex]['images'][prevIndex];
+			esp.carousel.data[carouselIndex]['current'] = prevIndex;
+			
+			$(currentImage).toggleClass('esp-show');
+			$(prevImage).toggleClass('esp-show');
         }
     },
     
