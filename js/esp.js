@@ -5,12 +5,6 @@
  */
 
 
-$(document).ready(function()
-{
-    esp.parseDocument();
-});
-
-
 esp =
 {
     parseDocument: function()
@@ -318,5 +312,115 @@ esp =
 			}
 			return false;
 		}
-	}
+	},
+    
+    calendar:
+    {
+        // labels for day and month in an array
+        // 0 => en_EN
+        // 1 => de_DE
+        dowLabels: [
+            ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So']
+        ],
+        monthLabels: [
+            ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember']
+        ],
+        
+        /*
+        now: new Date(),
+        currentDay: this.now.getDay(),
+        currentMonth: this.now.getMonth() + 1,
+        currentYear: this.now.getYear() + 1990,
+        */
+        
+        createAsTable: function(month, year, tableId, lang = 0)
+        {
+            // get Current Day, Month, Year
+            var now = new Date();
+            var currentDay = now.getDay();
+            var currentMonth = now.getMonth() + 1;
+            var currentYear = now.getYear() + 1900;
+            
+            // get first week day of month
+            var time = new Date(year, month - 1, 1);
+            var start = time.getDay();
+            
+            if(start > 0)
+            {
+                start -= 1;
+            }
+            else
+            {
+                start = 6;
+            }
+            
+            // most month have 31 days
+            var stop = 31;
+            // April (4), Juni (6), September (9) und November (11) have 30 Days...
+            if(month == 4 || month == 6 || month == 9 || month == 11)
+            {
+                stop = 30;
+            };
+            // Febraury (2) has 28 Days
+            if(month == 2)
+            {
+                stop = 28;
+                // but in leap years..
+                if (Jahr %   4 == 0) Stop++;
+                if (Jahr % 100 == 0) Stop--;
+                if (Jahr % 400 == 0) Stop++;
+            }
+            var table = document.getElementById(tableId);
+            if(table.length < 1)
+            {
+                console.log('can not find id ' + tableId);
+                return false;
+            }
+            
+            var tableHeadline = esp.calendar.monthLabels[lang][month - 1] + ' ' + year;
+            var caption = table.createCaption();
+            caption.innerHTML = tableHeadline;
+            
+            // write table Head with DOW
+            var row = table.insertRow(0);
+            for(var i = 0; i < 7; i++)
+            {
+                var cell = row.insertCell(i);
+                cell.innerHTML = esp.calendar.dowLabels[lang][i];
+            }
+
+            var dayCounter = 1;
+            for( var i = 0; i < 5; i++)
+            {
+                var row = table.insertRow(1 + i);
+                for(var j = 0; j < 7; j++)
+                {
+                    var cell = row.insertCell(j);
+                    // insert empty cells befor start an after stop tag
+                    if(((i == 0) && (j < 6) && (j < start)) || (dayCounter > stop))
+                    {
+                        cell.innerHTML = ' ';
+                    }
+                    else
+                    {
+                        // insert normal cells with day number
+                        cell.innerHTML = dayCounter;
+                        // set class for today
+                        if((year == currentYear) && (month == currentMonth) && (dayCounter == currentDay))
+                        {
+                            cell.className = cell.className + 'esp-calendar-today';
+                        }
+                        dayCounter += 1;
+                    }
+                }
+            }
+        }
+    }
 };
+
+$(document).ready(function()
+{
+    esp.parseDocument();
+});
