@@ -372,50 +372,229 @@ esp =
                 if (Jahr % 100 == 0) Stop--;
                 if (Jahr % 400 == 0) Stop++;
             }
-            var table = document.getElementById(tableId);
+            //var table = document.getElementById(tableId);
+            var tableArr = $(tableId);
+            if(tableArr.length < 1)
+            {
+                console.log('can not find id ' + tableId);
+                return false;
+            }
+            
+            for(var t = 0; t < tableArr.length; t++)
+            {
+                var table = tableArr[t];
+                
+                // Store current year and current month in tables dataset
+                // IMPORTANT !! do not use uppercase letters for dataset !!
+                table.dataset.currentmonth = month;
+                table.dataset.currentyear = year;
+                
+                var tableHeadline = esp.calendar.monthLabels[lang][month - 1] + ' ' + year;
+                var caption = table.createCaption();
+                caption.innerHTML = '<span class="esp-calendar-headline">' + tableHeadline + '</span>';
+
+                // write table Head with DOW
+                var row = table.insertRow(0);
+                for(var i = 0; i < 7; i++)
+                {
+                    var cell = row.insertCell(i);
+                    cell.innerHTML = esp.calendar.dowLabels[lang][i];
+                }
+
+                var dayCounter = 1;
+                for( var i = 0; i < 5; i++)
+                {
+                    var row = table.insertRow(1 + i);
+                    for(var j = 0; j < 7; j++)
+                    {
+                        var cell = row.insertCell(j);
+                        // insert empty cells befor start an after stop tag
+                        if(((i == 0) && (j < 6) && (j < start)) || (dayCounter > stop))
+                        {
+                            cell.innerHTML = ' ';
+                        }
+                        else
+                        {
+                            // insert normal cells with day number
+                            cell.innerHTML = dayCounter;
+                            // set class for today
+                            if((year == currentYear) && (month == currentMonth) && (dayCounter == currentDay))
+                            {
+                                cell.className = cell.className + 'esp-calendar-today';
+                            }
+                            dayCounter += 1;
+                        }
+                    }
+                }
+            }
+        },
+        
+        injectPrevMonthButton: function(tableId, code = '<i class="fa fa-chevron-left esp-calendar-prev"></i>')
+        {
+            var tableCaption = $(tableId + ' caption');
+            if(tableCaption.length < 1)
+            {
+                console.log('can not find id ' + tableId);
+                return false;
+            }
+            tableCaption.prepend(code);
+        },
+        
+        injectNextMonthButton: function(tableId, code = '<i class="fa fa-chevron-right esp-calendar-next"></i>')
+        {
+            var tableCaption = $(tableId + ' caption');
+            if(tableCaption.length < 1)
+            {
+                console.log('can not find id ' + tableId);
+                return false;
+            }
+            tableCaption.append(code);
+        },
+        
+        loadMonth: function(month, year, tableId, lang = 0)
+        {
+            // check for valid month
+            if(month < 0 || month > 11)
+            {
+                console.log('Invalid value for month (0-11)');
+                return false;
+            }
+            
+            // get Current Day, Month, Year
+            var now = new Date();
+            var currentDay = now.getDay();
+            var currentMonth = now.getMonth() + 1;
+            var currentYear = now.getYear() + 1900;
+            
+            // get first week day of month
+            var time = new Date(year, month - 1, 1);
+            var start = time.getDay();
+            
+            if(start > 0)
+            {
+                start -= 1;
+            }
+            else
+            {
+                start = 6;
+            }
+            
+            // most month have 31 days
+            var stop = 31;
+            // April (4), Juni (6), September (9) und November (11) have 30 Days...
+            if(month == 4 || month == 6 || month == 9 || month == 11)
+            {
+                stop = 30;
+            };
+            // Febraury (2) has 28 Days
+            if(month == 2)
+            {
+                stop = 28;
+                // but in leap years ...
+                if (year %   4 == 0) stop++;
+                if (year % 100 == 0) stop--;
+                if (year % 400 == 0) stop++;
+            }
+            //var table = document.getElementById(tableId);
+            var tableArr = $(tableId);
+            if(tableArr.length < 1)
+            {
+                console.log('can not find id ' + tableId);
+                return false;
+            }
+            
+            for(var t = 0; t < tableArr.length; t++)
+            {
+                var table = tableArr[t];
+                
+                // Store current year and current month in tables dataset
+                // IMPORTANT !! do not use uppercase letters for dataset !!
+                table.dataset.currentmonth = month;
+                table.dataset.currentyear = year;
+                
+                var tableHeadline = esp.calendar.monthLabels[lang][month] + ' ' + year;
+                //var caption = table.createCaption();
+                //caption.innerHTML = tableHeadline;
+                var caption = tableArr.find('caption .esp-calendar-headline')[0];
+                caption.innerHTML = tableHeadline;
+
+                // write table Head with DOW
+                /*
+                var row = table.insertRow(0);
+                for(var i = 0; i < 7; i++)
+                {
+                    var cell = row.insertCell(i);
+                    cell.innerHTML = esp.calendar.dowLabels[lang][i];
+                }
+                */
+
+                var dayCounter = 1;
+                for( var i = 0; i < 5; i++)
+                {
+                    var row = table.rows[1 + i];
+                    for(var j = 0; j < 7; j++)
+                    {
+                        var cell = row.cells[j];
+                        // insert empty cells befor start an after stop tag
+                        if(((i == 0) && (j < 6) && (j < start)) || (dayCounter > stop))
+                        {
+                            cell.innerHTML = ' ';
+                        }
+                        else
+                        {
+                            // insert normal cells with day number
+                            cell.innerHTML = dayCounter;
+                            // set class for today
+                            if((year == currentYear) && (month == currentMonth) && (dayCounter == currentDay))
+                            {
+                                cell.className = cell.className + 'esp-calendar-today';
+                            }
+                            dayCounter += 1;
+                        }
+                    }
+                }
+            }
+        },
+        
+        loadPrevMonth: function(tableId)
+        {
+            
+            var table = $(tableId);
             if(table.length < 1)
             {
                 console.log('can not find id ' + tableId);
                 return false;
             }
             
-            var tableHeadline = esp.calendar.monthLabels[lang][month - 1] + ' ' + year;
-            var caption = table.createCaption();
-            caption.innerHTML = tableHeadline;
+            var month = table.data('currentmonth') - 1;
+            var year = table.data('currentyear');
             
-            // write table Head with DOW
-            var row = table.insertRow(0);
-            for(var i = 0; i < 7; i++)
+            if( month < 0)
             {
-                var cell = row.insertCell(i);
-                cell.innerHTML = esp.calendar.dowLabels[lang][i];
+                month = 11;
+                year -= 1;
             }
-
-            var dayCounter = 1;
-            for( var i = 0; i < 5; i++)
+            return esp.calendar.loadMonth(month, year, tableId);
+        },
+        
+        loadNextMonth: function(tableId)
+        {
+            var table = $(tableId);
+            if(table.length < 1)
             {
-                var row = table.insertRow(1 + i);
-                for(var j = 0; j < 7; j++)
-                {
-                    var cell = row.insertCell(j);
-                    // insert empty cells befor start an after stop tag
-                    if(((i == 0) && (j < 6) && (j < start)) || (dayCounter > stop))
-                    {
-                        cell.innerHTML = ' ';
-                    }
-                    else
-                    {
-                        // insert normal cells with day number
-                        cell.innerHTML = dayCounter;
-                        // set class for today
-                        if((year == currentYear) && (month == currentMonth) && (dayCounter == currentDay))
-                        {
-                            cell.className = cell.className + 'esp-calendar-today';
-                        }
-                        dayCounter += 1;
-                    }
-                }
+                console.log('can not find id ' + tableId);
+                return false;
             }
+            
+            var month = table.data('currentmonth') + 1;
+            var year = table.data('currentyear');
+            
+            if(month > 11)
+            {
+                month = 0;
+                year += 1;
+            }
+            return esp.calendar.loadMonth(month, year, tableId);
         }
     }
 };
