@@ -17,7 +17,7 @@ and open the template in the editor.
             {
                 var now = new Date();
                 var currentDay = now.getDay();
-                var currentMonth = now.getMonth() + 1;
+                var currentMonth = now.getMonth();
                 var currentYear = now.getYear() + 1900;
                 esp.calendar.createAsTable(currentMonth, currentYear, '#calendarTable', 1);
                 esp.calendar.injectPrevMonthButton('#calendarTable');
