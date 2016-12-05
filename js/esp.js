@@ -461,11 +461,11 @@ esp =
                         // set class for today
                         if((year == currentYear) && (month == currentMonth) && (dayCounter == currentDay))
                         {
-                            tbody = tbody + '<td class="esp-calendar-today">' + dayCounter + '</td>';
+                            tbody = tbody + '<td class="esp-calendar-today" data-day="' + dayCounter + '" data-month="' + (month + 1) + '" data-year="' + year + '">' + dayCounter + '</td>';
                         }
                         else
                         {
-                            tbody = tbody + '<td>' + dayCounter + '</td>';
+                            tbody = tbody + '<td data-day="' + dayCounter + '" data-month="' + (month + 1) + '" data-year="' + year + '">' + dayCounter + '</td>';
                         }
                         dayCounter += 1;
                     }
