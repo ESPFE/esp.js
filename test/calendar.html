@@ -22,17 +22,57 @@ and open the template in the editor.
                 esp.calendar.createAsTable(currentMonth, currentYear, '#calendarTable', 1);
                 esp.calendar.injectPrevMonthButton('#calendarTable');
                 esp.calendar.injectNextMonthButton('#calendarTable');
-                
+                $('#calendarTable tbody td').on('click', showDay);
+                    
                 $('#calendarTable .esp-calendar-prev').on('click', function()
                 {
                     esp.calendar.loadPrevMonth('#calendarTable');
+                    $('#calendarTable tbody td').on('click', showDay);
                 });
                 $('#calendarTable .esp-calendar-next').on('click', function()
                 {
                     esp.calendar.loadNextMonth('#calendarTable');
+                    $('#calendarTable tbody td').on('click', showDay);
                 });
+                
+                
             });
+            
+            function showDay()
+            {
+                alert( this.dataset['day'] + '.' + this.dataset['month'] + '.' + this.dataset['year']);
+            }
         </script>
+        <style>
+            body
+            {
+                font-family: Arial, Verdana, sans-serif;
+            }
+            #calendarTable .esp-calendar-prev
+            {
+                float: left;
+                cursor: pointer;
+            }
+            #calendarTable .esp-calendar-next
+            {
+                float: right;
+                cursor: pointer;
+            }
+            #calendarTable td
+            {
+                text-align: center;
+            }
+            
+            #calendarTable tbody td
+            {
+                cursor: pointer;
+            }
+            
+            #calendarTable .esp-calendar-today
+            {
+                background-color: #ddf;
+            }
+        </style>
     </head>
     <body>
         <table id="calendarTable"></table>
