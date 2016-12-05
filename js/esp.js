@@ -368,9 +368,9 @@ esp =
             {
                 stop = 28;
                 // but in leap years..
-                if (Jahr %   4 == 0) Stop++;
-                if (Jahr % 100 == 0) Stop--;
-                if (Jahr % 400 == 0) Stop++;
+                if (year %   4 == 0) stop++;
+                if (year % 100 == 0) stop--;
+                if (year % 400 == 0) stop++;
             }
             //var table = document.getElementById(tableId);
             var tableArr = $(tableId);
