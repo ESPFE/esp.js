@@ -28,11 +28,11 @@ esp =
 	{
 		xsMin: 0,
 		xsMax: 768,
-		smMin: esp.screen.xsMax + 1,
+		smMin: 769,
 		smMax: 991,
-		mdMin: esp.screen.smMax + 1,
+		mdMin: 992,
 		mdMax: 1199,
-		ldMin: esp.screen.mdMax + 1
+		ldMin: 1200
 	},
 	
     nav:
