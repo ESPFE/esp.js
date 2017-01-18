@@ -23,7 +23,18 @@ esp =
             esp.nav.parseDocument();
             esp.carousel.parseDocument();
     },
-
+	
+	screen:
+	{
+		xsMin: 0,
+		xsMax: 768,
+		smMin: esp.screen.xsMax + 1,
+		smMax: 991,
+		mdMin: esp.screen.smMax + 1,
+		mdMax: 1199,
+		ldMin: esp.screen.mdMax + 1
+	},
+	
     nav:
     {
         parseDocument: function()
