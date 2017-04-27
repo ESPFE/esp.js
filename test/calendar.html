@@ -15,11 +15,7 @@ and open the template in the editor.
         <script>
             $(document).ready(function()
             {
-                var now = new Date();
-                var currentDay = now.getDay();
-                var currentMonth = now.getMonth();
-                var currentYear = now.getYear() + 1900;
-                esp.calendar.createAsTable(currentMonth, currentYear, '#calendarTable', 1);
+                esp.calendar.createAsTableNow('#calendarTable');
                 esp.calendar.injectPrevMonthButton('#calendarTable');
                 esp.calendar.injectNextMonthButton('#calendarTable');
                 $('#calendarTable tbody td').on('click', showDay);

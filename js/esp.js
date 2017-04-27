@@ -290,9 +290,36 @@ var esp =
             ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
             ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember']
         ],
-               
-        createAsTable: function(month, year, tableId, lang = 0)
+        
+        /**
+         * 
+         * @param string tableId
+         * @param int lang
+         */
+        createAsTableNow: function(tableId, lang)
         {
+            // set default parameters
+            if(typeof(lang) === 'undefined') { lang = 0; }
+            
+            var now = new Date();
+            var currentMonth = now.getMonth();
+            var currentYear = now.getYear() + 1900;
+            esp.calendar.createAsTable(currentMonth, currentYear, tableId, 1);
+        },
+        
+        /* 
+         * create calendar as a table
+         * 
+         * @param int month
+         * @param int year
+         * @param string tableId
+         * @param int lang = 0      -> see dowLabels/monthLabels
+         */
+        createAsTable: function(month, year, tableId, lang)
+        {
+            // set default parameters
+            if(typeof(lang) === 'undefined') { lang = 0; }
+            
             var tableArr = $(tableId);
             if(tableArr.length < 1)
             {
@@ -313,8 +340,16 @@ var esp =
             esp.calendar.loadMonth(month, year, tableId, lang);
         },
         
-        injectPrevMonthButton: function(tableId, code = '<i class="fa fa-chevron-left esp-calendar-prev"></i>')
+        /**
+         * 
+         * @param string tableId
+         * @param string code       -> html code for button
+         */
+        injectPrevMonthButton: function(tableId, code)
         {
+            // set default parameters
+            if(typeof(code) === 'undefined') { code = '<i class="fa fa-chevron-left esp-calendar-prev"></i>'; }
+            
             var tableCaption = $(tableId + ' caption');
             if(tableCaption.length < 1)
             {
@@ -324,8 +359,16 @@ var esp =
             tableCaption.prepend(code);
         },
         
-        injectNextMonthButton: function(tableId, code = '<i class="fa fa-chevron-right esp-calendar-next"></i>')
+        /**
+         * 
+         * @param string tableId
+         * @param string code       -> html code for button
+         */
+        injectNextMonthButton: function(tableId, code)
         {
+            // set default parameters
+            if(typeof(code) === 'undefined') { code = '<i class="fa fa-chevron-right esp-calendar-next"></i>'; }
+            
             var tableCaption = $(tableId + ' caption');
             if(tableCaption.length < 1)
             {
@@ -335,8 +378,19 @@ var esp =
             tableCaption.append(code);
         },
         
-        loadMonth: function(month, year, tableId, lang = 0)
+        /**
+         * load a new month
+         * 
+         * @param int month
+         * @param int year
+         * @param string tableId
+         * @param int lang
+         */
+        loadMonth: function(month, year, tableId, lang)
         {
+            // set default parameters
+            if(typeof(lang) === 'undefined') { lang = 0; }
+            
             // check for valid month
             if(month < 0 || month > 11)
             {
@@ -373,18 +427,18 @@ var esp =
             // most month have 31 days
             var stop = 31;
             // April (3), Juni (5), September (8) und November (10) have 30 Days...
-            if(month == 3 || month == 5 || month == 8 || month == 10)
+            if(month === 3 || month === 5 || month === 8 || month === 10)
             {
                 stop = 30;
             };
             // Febraury (1) has 28 Days
-            if(month == 1)
+            if(month === 1)
             {
                 stop = 28;
                 // but in leap years ...
-                if (year %   4 == 0) stop++;
-                if (year % 100 == 0) stop--;
-                if (year % 400 == 0) stop++;
+                if (year %   4 === 0) stop++;
+                if (year % 100 === 0) stop--;
+                if (year % 400 === 0) stop++;
             }
             
             // Store current year and current month in tables dataset
@@ -403,7 +457,7 @@ var esp =
                 for(var j = 0; j < 7; j++)
                 {
                     // insert empty cells befor start an after stop tag
-                    if(((i == 0) && (j < 6) && (j < start)) || (dayCounter > stop))
+                    if(((i === 0) && (j < 6) && (j < start)) || (dayCounter > stop))
                     {
                         tbody = tbody + '<td> </td>';
                     }
@@ -411,7 +465,7 @@ var esp =
                     {
                         // insert normal cells with day number
                         // set class for today
-                        if((year == currentYear) && (month == currentMonth) && (dayCounter == currentDay))
+                        if((year === currentYear) && (month === currentMonth) && (dayCounter === currentDay))
                         {
                             tbody = tbody + '<td class="esp-calendar-today" data-day="' + dayCounter + '" data-month="' + (month + 1) + '" data-year="' + year + '">' + dayCounter + '</td>';
                         }
@@ -427,6 +481,10 @@ var esp =
             tableArr.find('tbody').html(tbody);
         },
         
+        /**
+         * 
+         * @param string tableId
+         */
         loadPrevMonth: function(tableId)
         {
             
@@ -448,6 +506,10 @@ var esp =
             return esp.calendar.loadMonth(month, year, tableId);
         },
         
+        /**
+         * 
+         * @param string tableId
+         */
         loadNextMonth: function(tableId)
         {
             var table = $(tableId);
