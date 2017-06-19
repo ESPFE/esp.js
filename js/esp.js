@@ -192,8 +192,8 @@ var esp =
         
     calendar:
     {
-        prevCallack = null,
-        nextCallback = null,
+        prevCallack: null,
+        nextCallback: null,
         
         // labels for day and month in an array
         // 0 => en_EN
