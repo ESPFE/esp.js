@@ -22,7 +22,6 @@ var esp =
     parseDocument: function()
     {
             esp.nav.parseDocument();
-            esp.carousel.parseDocument();
     },
 	
 	screen:
@@ -66,92 +65,6 @@ var esp =
     {
         var minHeight = $(heightSource).height();
         $(heightTarget).css('min-height', minHeight);
-    },
-
-    carousel:
-    {
-        data: new Array(),
-
-        parseDocument: function()
-        {
-            var tmp = $('.esp-carousel');
-            for( var i = 0; i < tmp.length; i++)
-            {
-                var images = $(tmp[i]).find('img');
-				esp.carousel.data[i] = new Array();
-				esp.carousel.data[i]['images'] = images;
-				esp.carousel.data[i]['current'] = 0;
-                var btnNext = $(tmp[i]).find('.esp-next');
-				btnNext.attr('data-espcarouselindex', i);
-                var btnPrev = $(tmp[i]).find('.esp-prev');
-				btnPrev.attr('data-espcarouselindex', i);
-
-                $(btnNext).click(function()
-                {
-                    esp.carousel.loadNext(this);
-                });
-
-                $(btnPrev).click(function()
-                {
-                    esp.carousel.loadPrev(this);
-                });
-                
-                // add swipe left/right event
-                for(var j = 0; j < images.length; j++)
-                {
-                    esp.events.swipedetect(images[j], function(swipedir, event)
-                    {
-                        
-                        if(swipedir === 'left')
-                        {
-                            esp.carousel.loadNext(event.currentTarget);
-                            event.preventDefault();
-                        }
-                        else if(swipedir === 'right')
-                        {
-                            esp.carousel.loadPrev(event.currentTarget);
-                            event.preventDefault();
-                        }
-                    });
-                }
-            }
-        },
-
-        loadNext: function(button)
-        {
-            var carouselIndex = button.dataset['espcarouselindex'];
-            var currentIndex = esp.carousel.data[carouselIndex]['current'];
-            var currentImage = esp.carousel.data[carouselIndex]['images'][currentIndex];
-            var nextIndex = currentIndex + 1;
-
-            if( nextIndex >= esp.carousel.data[carouselIndex]['images'].length)
-            {
-                    nextIndex = 0;
-            }
-            var nextImage = esp.carousel.data[carouselIndex]['images'][nextIndex];
-            esp.carousel.data[carouselIndex]['current'] = nextIndex;
-
-            $(currentImage).toggleClass('esp-show');
-            $(nextImage).toggleClass('esp-show');
-        },
-
-        loadPrev: function(button)
-        {
-            var carouselIndex = button.dataset['espcarouselindex'];
-            var currentIndex = esp.carousel.data[carouselIndex]['current'];
-            var currentImage = esp.carousel.data[carouselIndex]['images'][currentIndex];
-            var prevIndex = currentIndex - 1;
-
-            if(prevIndex < 0)
-            {
-                    prevIndex = esp.carousel.data[carouselIndex]['images'].length - 1;
-            }
-            var prevImage = esp.carousel.data[carouselIndex]['images'][prevIndex];
-            esp.carousel.data[carouselIndex]['current'] = prevIndex;
-
-            $(currentImage).toggleClass('esp-show');
-            $(prevImage).toggleClass('esp-show');
-        }
     },
 	
     // YouTube Video API integration
@@ -279,6 +192,9 @@ var esp =
         
     calendar:
     {
+        prevCallack = null,
+        nextCallback = null,
+        
         // labels for day and month in an array
         // 0 => en_EN
         // 1 => de_DE
@@ -467,11 +383,11 @@ var esp =
                         // set class for today
                         if((year === currentYear) && (month === currentMonth) && (dayCounter === currentDay))
                         {
-                            tbody = tbody + '<td id="' + String(dayCounter) + String(month + 1) + String(year) + '" class="esp-calendar-today" data-day="' + dayCounter + '" data-month="' + (month + 1) + '" data-year="' + year + '">' + dayCounter + '</td>';
+                            tbody = tbody + '<td class="esp-calendar-today" data-day="' + dayCounter + '" data-month="' + (month + 1) + '" data-year="' + year + '" data-id="' + String(dayCounter) + String(month + 1) + String(year) + '">' + dayCounter + '</td>';
                         }
                         else
                         {
-                            tbody = tbody + '<td id="' + String(dayCounter) + String(month + 1) + String(year) + '" data-day="' + dayCounter + '" data-month="' + (month + 1) + '" data-year="' + year + '">' + dayCounter + '</td>';
+                            tbody = tbody + '<td data-day="' + dayCounter + '" data-month="' + (month + 1) + '" data-year="' + year + '" data-id="' + String(dayCounter) + String(month + 1) + String(year) + '">' + dayCounter + '</td>';
                         }
                         dayCounter += 1;
                     }
