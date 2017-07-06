@@ -247,7 +247,7 @@ let esp =
             let dowRow = '<thead><tr>';
             for(let i = 0; i < 7; i++)
             {
-                dowRow = dowRow + '<td>' + esp.calendar.dowLabels[lang][i] + '</td>';
+                dowRow = dowRow + '<td><span>' + esp.calendar.dowLabels[lang][i] + '</span></td>';
             }
             dowRow = dowRow + '</tr></thead>';
             tableArr.append(dowRow);
@@ -383,11 +383,11 @@ let esp =
                         // set class for today
                         if((year === currentYear) && (month === currentMonth) && (dayCounter === currentDay))
                         {
-                            tbody = tbody + '<td class="esp-calendar-today" data-day="' + dayCounter + '" data-month="' + (month + 1) + '" data-year="' + year + '" data-id="' + String(dayCounter) + String(month + 1) + String(year) + '">' + dayCounter + '</td>';
+                            tbody = tbody + '<td class="esp-calendar-today" data-day="' + dayCounter + '" data-month="' + (month + 1) + '" data-year="' + year + '" data-id="' + String(dayCounter) + String(month + 1) + String(year) + '"><span>' + dayCounter + '</span></td>';
                         }
                         else
                         {
-                            tbody = tbody + '<td data-day="' + dayCounter + '" data-month="' + (month + 1) + '" data-year="' + year + '" data-id="' + String(dayCounter) + String(month + 1) + String(year) + '">' + dayCounter + '</td>';
+                            tbody = tbody + '<td data-day="' + dayCounter + '" data-month="' + (month + 1) + '" data-year="' + year + '" data-id="' + String(dayCounter) + String(month + 1) + String(year) + '"><span>' + dayCounter + '</span></td>';
                         }
                         dayCounter += 1;
                     }
