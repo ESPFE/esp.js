@@ -23,4 +23,38 @@
 .esp-hidden {
   display: none!important;
 }
+.esp-image-carousel {
+  position: relative;
+}
+.esp-image-carousel .image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 2s;
+  z-index: 500;
+}
+.esp-image-carousel .image.current {
+  position: relative;
+  opacity: 1;
+}
+.esp-image-carousel .image-controls {
+  position: absolute;
+  z-index: 500;
+  max-width: 100%;
+}
+.esp-image-carousel .image-controls .image-control {
+  margin-right: 5px;
+  height: 7px;
+  width: 20px;
+  display: inline-block;
+  transition: background-color 2s;
+}
+.esp-image-carousel .image-controls .image-control:last-child {
+  margin-right: 0;
+}
+.esp-image-carousel .image-controls .image-control.current,
+.esp-image-carousel .image-controls .image-control:hover {
+  cursor: pointer;
+}
 /*# sourceMappingURL=esp.css.map */

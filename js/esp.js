@@ -39,7 +39,7 @@ let esp =
     {
         parseDocument: function()
         {
-            var button = $('.esp-toggle-nav');
+            let button = $('.esp-toggle-nav');
             button.click(function()
             {
                 esp.nav.toggle(this);
@@ -48,14 +48,14 @@ let esp =
 
         toggle: function(button)
         {
-            var target = $(button.dataset['target']);
-            var toggleClass = button.dataset['toggleclass'];
+            let target = $(button.dataset['target']);
+            let toggleClass = button.dataset['toggleclass'];
 
             target.toggleClass(toggleClass);
 
             if( 'caret' in button.dataset )
             {
-                var caret = $(button.dataset['caret']);
+                let caret = $(button.dataset['caret']);
                 caret.toggleClass('nav-expanded');
             }
         }
@@ -63,7 +63,7 @@ let esp =
 
     adjustMinHeight: function(heightSource, heightTarget)
     {
-        var minHeight = $(heightSource).height();
+        let minHeight = $(heightSource).height();
         $(heightTarget).css('min-height', minHeight);
     },
 	
@@ -88,15 +88,15 @@ let esp =
         parseDocument: function()
         {
             // find iframes with youtube video
-            var ytIframes = $('.' + this.iframeClass);
-            var startButtons = $('.' + this.startClass);
-            var stopButtons = $('.' + this.stopClass);
-            var startStopButtons = $('.' + this.startStopClass);
+            let ytIframes = $('.' + this.iframeClass);
+            let startButtons = $('.' + this.startClass);
+            let stopButtons = $('.' + this.stopClass);
+            let startStopButtons = $('.' + this.startStopClass);
 
             // create youtube video objects
-            for(var i = 0; i < ytIframes.length; i++)
+            for(let i = 0; i < ytIframes.length; i++)
             {
-                var currentId = ytIframes[i].id;
+                let currentId = ytIframes[i].id;
                 this.players[currentId] = new YT.Player(currentId);
                 this.players[currentId].addEventListener('onStateChange', function(e)
                 {
@@ -109,7 +109,7 @@ let esp =
                     if(e.data === YT.PlayerState.PLAYING)
                     {
                         // Get id of started player
-                        var playerId = e.target.a.id;
+                        let playerId = e.target.a.id;
                         if(esp.yt.playingId !== playerId)
                         {
                             esp.yt.players[esp.yt.playingId].pauseVideo();
@@ -135,7 +135,7 @@ let esp =
 
         start: function(target, callback)
         {
-            var forPlayer = target.dataset['for'];
+            let forPlayer = target.dataset['for'];
             if(esp.yt.playingId !== null)
             {
                     esp.yt.players[esp.yt.playingId].pauseVideo();
@@ -152,7 +152,7 @@ let esp =
 
         stop: function(target, callback)
         {
-            var forPlayer = target.dataset['for'];
+            let forPlayer = target.dataset['for'];
             if(esp.yt.playingId === forPlayer)
             {
                     esp.yt.players[forPlayer].pauseVideo();
@@ -167,7 +167,7 @@ let esp =
 
         startStop: function(target, callback)
         {
-            var forPlayer = target.dataset['for'];
+            let forPlayer = target.dataset['for'];
             if(esp.yt.playingId === forPlayer)
             {
                     esp.yt.players[forPlayer].pauseVideo();
@@ -217,9 +217,9 @@ let esp =
             // set default parameters
             if(typeof(lang) === 'undefined') { lang = 0; }
             
-            var now = new Date();
-            var currentMonth = now.getMonth();
-            var currentYear = now.getYear() + 1900;
+            let now = new Date();
+            let currentMonth = now.getMonth();
+            let currentYear = now.getYear() + 1900;
             esp.calendar.createAsTable(currentMonth, currentYear, tableId, 1);
         },
         
@@ -236,7 +236,7 @@ let esp =
             // set default parameters
             if(typeof(lang) === 'undefined') { lang = 0; }
             
-            var tableArr = $(tableId);
+            let tableArr = $(tableId);
             if(tableArr.length < 1)
             {
                 console.log('can not find id ' + tableId);
@@ -244,8 +244,8 @@ let esp =
             }
             tableArr.prepend('<caption><span class="esp-calendar-headline"></span></caption>');
             // write table Head with DOW
-            var dowRow = '<thead><tr>';
-            for(var i = 0; i < 7; i++)
+            let dowRow = '<thead><tr>';
+            for(let i = 0; i < 7; i++)
             {
                 dowRow = dowRow + '<td>' + esp.calendar.dowLabels[lang][i] + '</td>';
             }
@@ -266,7 +266,7 @@ let esp =
             // set default parameters
             if(typeof(code) === 'undefined') { code = '<i class="fa fa-chevron-left esp-calendar-prev"></i>'; }
             
-            var tableCaption = $(tableId + ' caption');
+            let tableCaption = $(tableId + ' caption');
             if(tableCaption.length < 1)
             {
                 console.log('can not find id ' + tableId);
@@ -285,7 +285,7 @@ let esp =
             // set default parameters
             if(typeof(code) === 'undefined') { code = '<i class="fa fa-chevron-right esp-calendar-next"></i>'; }
             
-            var tableCaption = $(tableId + ' caption');
+            let tableCaption = $(tableId + ' caption');
             if(tableCaption.length < 1)
             {
                 console.log('can not find id ' + tableId);
@@ -314,7 +314,7 @@ let esp =
                 return false;
             }
             
-            var tableArr = $(tableId);
+            let tableArr = $(tableId);
             if(tableArr.length < 1)
             {
                 console.log('can not find id ' + tableId);
@@ -322,14 +322,14 @@ let esp =
             }
             
             // get Current Day, Month, Year
-            var now = new Date();
-            var currentDay = now.getDate();
-            var currentMonth = now.getMonth();
-            var currentYear = now.getYear() + 1900;
+            let now = new Date();
+            let currentDay = now.getDate();
+            let currentMonth = now.getMonth();
+            let currentYear = now.getYear() + 1900;
             
             // get first week day of month
-            var time = new Date(year, month, 1);
-            var start = time.getDay();
+            let time = new Date(year, month, 1);
+            let start = time.getDay();
             
             if(start > 0)
             {
@@ -341,7 +341,7 @@ let esp =
             }
             
             // most month have 31 days
-            var stop = 31;
+            let stop = 31;
             // April (3), Juni (5), September (8) und November (10) have 30 Days...
             if(month === 3 || month === 5 || month === 8 || month === 10)
             {
@@ -362,15 +362,15 @@ let esp =
             tableArr.data('currentmonth', month);
             tableArr.data('currentyear', year);
 
-            var tableHeadline = esp.calendar.monthLabels[lang][month] + ' ' + year;
+            let tableHeadline = esp.calendar.monthLabels[lang][month] + ' ' + year;
             tableArr.find('caption .esp-calendar-headline').html(tableHeadline);
 
-            var tbody = '';
+            let tbody = '';
 
-            for( var i = 0, dayCounter = 1; dayCounter <= stop; i++)
+            for( let i = 0, dayCounter = 1; dayCounter <= stop; i++)
             {
                 tbody = tbody + '<tr>';
-                for(var j = 0; j < 7; j++)
+                for(let j = 0; j < 7; j++)
                 {
                     // insert empty cells befor start an after stop tag
                     if(((i === 0) && (j < 6) && (j < start)) || (dayCounter > stop))
@@ -404,15 +404,15 @@ let esp =
         loadPrevMonth: function(tableId)
         {
             
-            var table = $(tableId);
+            let table = $(tableId);
             if(table.length < 1)
             {
                 console.log('can not find id ' + tableId);
                 return false;
             }
             
-            var month = table.data('currentmonth') - 1;
-            var year = table.data('currentyear');
+            let month = table.data('currentmonth') - 1;
+            let year = table.data('currentyear');
             
             if( month < 0)
             {
@@ -428,15 +428,15 @@ let esp =
          */
         loadNextMonth: function(tableId)
         {
-            var table = $(tableId);
+            let table = $(tableId);
             if(table.length < 1)
             {
                 console.log('can not find id ' + tableId);
                 return false;
             }
             
-            var month = table.data('currentmonth') + 1;
-            var year = table.data('currentyear');
+            let month = table.data('currentmonth') + 1;
+            let year = table.data('currentyear');
             
             if(month > 11)
             {
@@ -445,6 +445,82 @@ let esp =
             }
             return esp.calendar.loadMonth(month, year, tableId);
         }
+    },
+    
+    imageCarouselArray: null,
+    
+    imageCarousel: function(selector, intervalTime)
+    {
+        let self = this;
+        this.container = $(selector);
+        this.images = this.container.find('.image');
+        this.controls = this.container.find('.image-controls .image-control');
+        this.current = 0;
+        this.max = this.images.length;
+
+        $(this.images[0]).addClass('current');
+        $(this.controls[0]).addClass('current');
+
+        // clickhandler for image-controls
+        this.controls.on('click', function()
+        {
+            let imageToLoad = $(this).data('forimage');
+            self.loadImage(imageToLoad);
+        });
+
+        this.timeout = null;
+        this.intervalTime = intervalTime;
+
+
+        this.setTimeout = function()
+        {
+            if(this.timeout !== null)
+            {
+                window.clearTimeout(this.timeout);
+            }
+            this.timeout = window.setTimeout(function(obj)
+            {
+                obj.loadNext();
+            }, this.intervalTime, this);
+        };
+
+
+
+        // load a specific image
+        this.loadImage = function(image)
+        {
+            image = parseInt(image);
+            if(image < 0 || image >= this.max)
+            {
+                return false;
+            }
+
+            this.images.removeClass('current');
+            this.controls.removeClass('current');
+            $(this.images[image]).addClass('current');
+            $(this.controls[image]).addClass('current');
+            this.current = image;
+            this.setTimeout();
+            return true;
+        };
+
+        this.loadNext = function()
+        {
+            let next = this.current + 1;
+            if(next >= this.max)
+            {
+                next = 0;
+            }
+            this.loadImage(next);
+        };
+
+        this.setTimeout();
+        
+        if(esp.imageCarouselArray === null)
+        {
+            esp.imageCarouselArray = new Array();
+        }
+        esp.imageCarouselArray.push(this);
     }
 };
 
