@@ -17,7 +17,7 @@
 
 "use strict";
 
-var esp =
+let esp =
 {
     parseDocument: function()
     {
