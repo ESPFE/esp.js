@@ -194,6 +194,7 @@ let esp =
     {
         prevCallack: null,
         nextCallback: null,
+        lang: 0,
         
         // labels for day and month in an array
         // 0 => en_EN
@@ -216,6 +217,7 @@ let esp =
         {
             // set default parameters
             if(typeof(lang) === 'undefined') { lang = 0; }
+            esp.calendar.lang = lang;
             
             let now = new Date();
             let currentMonth = now.getMonth();
@@ -235,6 +237,7 @@ let esp =
         {
             // set default parameters
             if(typeof(lang) === 'undefined') { lang = 0; }
+            esp.calendar.lang = lang;
             
             let tableArr = $(tableId);
             if(tableArr.length < 1)
@@ -419,7 +422,7 @@ let esp =
                 month = 11;
                 year -= 1;
             }
-            return esp.calendar.loadMonth(month, year, tableId);
+            return esp.calendar.loadMonth(month, year, tableId, esp.calendar.lang);
         },
         
         /**
@@ -443,7 +446,7 @@ let esp =
                 month = 0;
                 year += 1;
             }
-            return esp.calendar.loadMonth(month, year, tableId);
+            return esp.calendar.loadMonth(month, year, tableId, esp.calendar.lang);
         }
     },
     
