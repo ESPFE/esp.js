@@ -48,16 +48,30 @@ var esp =
 
         toggle: function(button)
         {
-            var target = $(button.dataset['target']);
-            var toggleClass = button.dataset['toggleclass'];
-
+            let buttonJ = $(button);
+            let target = $(buttonJ.data('target'));
+            let toggleClass = buttonJ.data('toggleclass');
+            
+            if(buttonJ.data('isexpanded') === 0)
+            {
+                buttonJ.data('isexpanded', 1);
+                button.dataset['isexpanded'] = 1;
+            }
+            else
+            {
+                buttonJ.data('isexpanded', 0);
+                button.dataset['isexpanded'] = 0;
+            }
+            
             target.toggleClass(toggleClass);
 
-            if( 'caret' in button.dataset )
+            /*
+            if( 'caret' in button.data()) )
             {
-                var caret = $(button.dataset['caret']);
+                let caret = $(button.data('caret'));
                 caret.toggleClass('nav-expanded');
             }
+            */
         }
     },
 
