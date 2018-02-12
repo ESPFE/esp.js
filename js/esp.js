@@ -234,7 +234,7 @@ var esp =
             var now = new Date();
             var currentMonth = now.getMonth();
             var currentYear = now.getYear() + 1900;
-            esp.calendar.createAsTable(currentMonth, currentYear, tableId, 1);
+            esp.calendar.createAsTable(currentMonth, currentYear, tableId, lang);
         },
         
         /* 
@@ -267,6 +267,7 @@ var esp =
             tableArr.append(dowRow);
             tableArr.append('<tbody></tbody>');
             
+            tableArr.data('lang', lang);
             esp.calendar.loadMonth(month, year, tableId, lang);
         },
         
@@ -427,13 +428,14 @@ var esp =
             
             var month = table.data('currentmonth') - 1;
             var year = table.data('currentyear');
+            var lang = table.data('lang');
             
             if( month < 0)
             {
                 month = 11;
                 year -= 1;
             }
-            return esp.calendar.loadMonth(month, year, tableId);
+            return esp.calendar.loadMonth(month, year, tableId, lang);
         },
         
         /**
@@ -451,13 +453,14 @@ var esp =
             
             var month = table.data('currentmonth') + 1;
             var year = table.data('currentyear');
+            var lang = table.data('lang');
             
             if(month > 11)
             {
                 month = 0;
                 year += 1;
             }
-            return esp.calendar.loadMonth(month, year, tableId);
+            return esp.calendar.loadMonth(month, year, tableId, lang);
         }
     }
 };
