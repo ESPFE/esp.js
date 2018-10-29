@@ -208,6 +208,8 @@ var esp =
     {
         prevCallack: null,
         nextCallback: null,
+        fillLastMonthDays: false,
+        fillNextMonthDays: false,
         
         // labels for day and month in an array
         // 0 => en_EN
@@ -355,22 +357,7 @@ var esp =
                 start = 6;
             }
             
-            // most month have 31 days
-            var stop = 31;
-            // April (3), Juni (5), September (8) und November (10) have 30 Days...
-            if(month === 3 || month === 5 || month === 8 || month === 10)
-            {
-                stop = 30;
-            };
-            // Febraury (1) has 28 Days
-            if(month === 1)
-            {
-                stop = 28;
-                // but in leap years ...
-                if (year %   4 === 0) stop++;
-                if (year % 100 === 0) stop--;
-                if (year % 400 === 0) stop++;
-            }
+            var stop = esp.calendar.getNDaysOfMonth(month, year);
             
             // Store current year and current month in tables dataset
             // IMPORTANT !! do not use uppercase letters for dataset !!
@@ -387,10 +374,31 @@ var esp =
                 tbody = tbody + '<tr>';
                 for(var j = 0; j < 7; j++)
                 {
-                    // insert empty cells befor start an after stop tag
-                    if(((i === 0) && (j < 6) && (j < start)) || (dayCounter > stop))
+                    // fill days of previus month
+                    if((i === 0) && (j < 6) && (j < start))
                     {
-                        tbody = tbody + '<td> </td>';
+                        if(esp.calendar.fillLastMonthDays === true)
+                        {
+                            tbody = tbody + esp.calendar.fFillLastMonthDays(month, year, start);
+                            j = start - 1;
+                        }
+                        else
+                        {
+                            tbody = tbody + '<td> </td>';
+                        }
+                    }
+                    // fill days of next month
+                    else if(dayCounter > stop)
+                    {
+                        if(esp.calendar.fillNextMonthDays === true)
+                        {
+                            tbody = tbody + esp.calendar.fFillNextMonthDays(j);
+                            j = 7;
+                        }
+                        else
+                        {
+                            tbody = tbody + '<td> </td>';
+                        }
                     }
                     else
                     {
@@ -410,6 +418,54 @@ var esp =
                 tbody = tbody + '</td>';
             }
             tableArr.find('tbody').html(tbody);
+        },
+        
+        fFillLastMonthDays: function(month, year, start)
+        {
+            month -= 1;
+            if( month < 0)
+            {
+                month = 11;
+                year -= 1;
+            }
+            var stop = esp.calendar.getNDaysOfMonth(month, year);
+            var html = '';
+            for(var i = stop - start + 1; i <= stop; i++)
+            {
+                html += '<td class="last-month-day">' + String(i) + '</td>';
+            }
+            return html;
+        },
+        
+        fFillNextMonthDays: function(monthCounter)
+        {
+            var html = '';
+            for(var i = 1; monthCounter < 7; i++, monthCounter++)
+            {
+                html += '<td class="next-month-day">' + String(i) + '</td>';
+            }
+            return html;
+        },
+        
+        getNDaysOfMonth: function(month, year)
+        {
+            // most month have 31 days
+            var stop = 31;
+            // April (3), Juni (5), September (8) und November (10) have 30 Days...
+            if(month === 3 || month === 5 || month === 8 || month === 10)
+            {
+                stop = 30;
+            };
+            // Febraury (1) has 28 Days
+            if(month === 1)
+            {
+                stop = 28;
+                // but in leap years ...
+                if (year %   4 === 0) stop++;
+                if (year % 100 === 0) stop--;
+                if (year % 400 === 0) stop++;
+            }
+            return stop;
         },
         
         /**
