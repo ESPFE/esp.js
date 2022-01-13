@@ -85,7 +85,7 @@ var esp =
         yt: {
             // in this array we stock all youtube video objects
             // the id of the iframe is the array index of each youtube video object
-            players: new Array(),
+            players: [],
             // current playing video/iframe
             // playingId is null if no video plays
             playingId: null,
@@ -111,7 +111,7 @@ var esp =
                 for(var i = 0; i < ytIframes.length; i++)
                 {
                     var currentId = ytIframes[i].id;
-                    this.players[currentId] = new YT.Player(currentId);
+                    this.players[currentId] = esp.yt.createPlayer(ytIframes[i]);
                     this.players[currentId].addEventListener('onStateChange', function(e)
                     {
                         // clear playingId if video ends
@@ -123,7 +123,7 @@ var esp =
                         if(e.data === YT.PlayerState.PLAYING)
                         {
                             // Get id of started player
-                            var playerId = e.target.a.id;
+                            var playerId = e.target.h.id;
                             if(esp.yt.playingId !== playerId)
                             {
                                 esp.yt.players[esp.yt.playingId].pauseVideo();
@@ -144,6 +144,16 @@ var esp =
                 startStopButtons.click(function()
                 {
                     esp.yt.startStop(this);
+                });
+            },
+
+            createPlayer: function(playerInfo)
+            {
+                return new YT.Player(playerInfo.id, {
+                    videoId: playerInfo.videoId,
+                    playerVars: {
+                        showinfo: 0,
+                    }
                 });
             },
 
