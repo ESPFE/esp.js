@@ -110,7 +110,7 @@ var esp =
                 // create youtube video objects
                 for(var i = 0; i < ytIframes.length; i++)
                 {
-                    var currentId = ytIframes[i].id;
+                    var currentId = ytIframes[i].dataset['ytid'];
                     this.players[currentId] = esp.yt.createPlayer(ytIframes[i]);
                     this.players[currentId].addEventListener('onStateChange', function(e)
                     {
@@ -118,17 +118,6 @@ var esp =
                         if(e.data === YT.PlayerState.ENDED )
                         {
                             esp.yt.playingId = null;
-                        }
-                        // stop current running video, if another starts with the youtube integrated start/stop button
-                        if(e.data === YT.PlayerState.PLAYING)
-                        {
-                            // Get id of started player
-                            var playerId = e.target.h.id;
-                            if(esp.yt.playingId !== playerId)
-                            {
-                                esp.yt.players[esp.yt.playingId].pauseVideo();
-                                esp.yt.playingId = playerId;
-                            }
                         }
                     });
                 }
@@ -150,7 +139,7 @@ var esp =
             createPlayer: function(playerInfo)
             {
                 return new YT.Player(playerInfo.id, {
-                    videoId: playerInfo.videoId,
+                    videoId: playerInfo.dataset['ytid'],
                     playerVars: {
                         showinfo: 0,
                     }
